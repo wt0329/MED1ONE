@@ -1,0 +1,29 @@
+package kr.or.ddit.notice.vo;
+
+import java.time.LocalDateTime;
+
+import javax.validation.constraints.NotBlank;
+
+import kr.or.ddit.employee.vo.EmployeeVO;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(of="noticeCode")
+public class NoticeBoardVO {
+	@NotBlank
+	private String noticeCode;
+	@NotBlank
+	private String noticeTitle;
+	@NotBlank
+	private String noticeContent;
+	@NotBlank
+	private LocalDateTime noticeRegidate;
+	@NotBlank
+	private int noticeReadcount;
+	private int atchFilenum;
+	@NotBlank
+	private String adminEmpNo;
+	
+	private EmployeeVO employee;
+}

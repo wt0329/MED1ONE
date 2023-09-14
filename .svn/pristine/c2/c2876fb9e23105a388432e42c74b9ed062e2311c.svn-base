@@ -1,0 +1,165 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+.canvas{
+height: 500px;
+}
+
+label{
+
+background-color: red;
+
+}
+
+</style>
+<div>
+<div>
+    <canvas id="salesChart" class="canvas"></canvas>
+</div>
+
+<div>
+    <canvas id="deptSalesChart"></canvas>
+</div>
+
+
+<div>
+    <canvas id="allSalesChart"></canvas>
+</div>
+
+</div>
+<%--분기별 총 매출액 꺾은선 그래프 --%>
+<script>
+    $(document).ready(function() {
+        $.getJSON("<c:url value='/sales/salesChart.do' />").done(function(resp) {
+            var labels2022 = [];
+            var labels2023 = [];
+            var data2022 = [];
+            var data2023 = [];
+
+            $(resp).each(function(idx, chart) {
+                var year = chart.salesYear; // 수정: 'year' 대신 'chart.salesYear' 사용
+                var quarter = chart.quarter;
+                var salesData = chart.totalSalesAmount;
+
+                var label = quarter + "분기"; // 수정: 'salesYear' 대신 'year' 사용
+                
+             
+                
+                if (year === '2022') {
+                    data2022.push(salesData);
+                    labels2022.push(label);
+                } else if (year === '2023'
+                		) { 
+                    data2023.push(salesData);
+                    labels2023.push(label);
+                }
+            });
+
+            var ctx = document.getElementById("salesChart").getContext("2d");
+            var chart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: labels2022, // 2022년 분기별 라벨 배열 사용
+                    datasets: [
+                        {
+                        	label: "2022",
+                            data: data2022,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1,
+                            fill: false
+                        },
+                        {
+                        	
+                             
+                         	label: "2023",
+                            data: data2023,
+                            borderColor:  'rgb(255, 99, 132)',
+                            tension: 0.1,
+                            fill: false
+                            
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: ""
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            display: true,
+                            title: {
+                                display: true,
+                                text: "매출액(원)"
+                            } ,
+                            ticks: {
+                                // 매출액 단위 세분화 및 눈금 간격 설정
+                                maxTicksLimit: 1000, // 눈금 간격 조절
+                                stepSize: 1000000000 // 스텝 크기 조정
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>
+<%-- 
+<script>
+부서별 매출액 꺾은선 그래프
+
+   $(document).ready(function() {
+        $.getJSON("<c:url value='/sales/deptSalesChart.do' />").done(function(resp) {
+        });
+   });
+   
+</script>
+
+
+
+
+
+
+
+
+
+연도별, 월별 내원환자수, 입원환자수
+
+<script>
+
+  $(document).ready(function() {
+        $.getJSON("<c:url value='/sales/allSalesChart.do' />").done(function(resp) {
+        });
+        
+        });
+
+</script> 
+
+
+
+<script>
+부서별 직원수 그래프
+직급별 직원수 그래프
+
+   $(document).ready(function() {
+        $.getJSON("<c:url value='/sales/deptSalesChart.do' />").done(function(resp) {
+        });
+   });
+   
+</script>
+
+
+
+--%>

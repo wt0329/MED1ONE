@@ -1,0 +1,31 @@
+package kr.or.ddit.Free.vo;
+
+import java.time.LocalDateTime;
+
+import javax.validation.constraints.NotBlank;
+
+import kr.or.ddit.employee.vo.EmployeeVO;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(of = "boardNo")
+@Data
+public class FreeBoardVO {
+	@NotBlank
+	private String boardNo;
+	@NotBlank
+	private String boardWrtr;
+	@NotBlank
+	private String boardTitle;
+	@NotBlank
+	private String boardContent;
+	@NotBlank
+	private LocalDateTime boardRegidate;
+	@NotBlank
+	private int boardReadcount;
+	private String boardAtchnum;
+	@NotBlank
+	private String empNo;
+	
+	private EmployeeVO employee;
+}

@@ -1,0 +1,24 @@
+package kr.or.ddit.medical.nurse.vo.wrapper;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
+import kr.or.ddit.medical.nurse.vo.DoctorSchdulVO;
+
+public interface FullcalenderEvent<T> {
+	
+	
+	public String getId();
+	@JsonFormat(shape = Shape.STRING)
+	public LocalDate getStart();
+	@JsonFormat(shape = Shape.STRING)
+	public LocalDate getEnd();
+	public String getTitle();
+	
+	public T getExtendedProps();
+	
+	
+}

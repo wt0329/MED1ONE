@@ -1,0 +1,136 @@
+package kr.or.ddit.sales.controller;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.or.ddit.sales.service.SalesService;
+import kr.or.ddit.sales.vo.SalesVO;
+
+@Controller
+@RequestMapping("/sales")
+public class SalesChartController {
+
+
+	@Inject
+	private	SalesService salesService;
+	
+	@GetMapping("chartView.do")
+	public String chartView() {
+		return "sales/salesChart";
+	}
+	
+	@GetMapping(value = "salesChart.do", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<SalesVO> salesChart() {
+		
+		List<SalesVO> totalQuarterSales = salesService.retrieveQuarterSales();
+		List<SalesVO> updatedQuarterSales = totalQuarterSales.stream()
+			    .map(salesVO -> {
+			        SalesVO updatedSalesVO = new SalesVO();
+			        String beforeQuarter = salesVO.getBeforeQuarter();
+			        String salesYear = salesVO.getSalesYear();
+			        updatedSalesVO.setBeforeQuarter(beforeQuarter);
+			        updatedSalesVO.setQuarter(Integer.parseInt(beforeQuarter));
+			        updatedSalesVO.setSalesYear(salesYear);
+
+			        String beforeTotalSalesAmount = salesVO.getBeforeTotalSalesAmount();
+			        updatedSalesVO.setBeforeTotalSalesAmount(beforeTotalSalesAmount);
+			        updatedSalesVO.setTotalSalesAmount(Long.parseLong(beforeTotalSalesAmount));
+
+			        System.out.println("updatedSalesVO>>>>>>>>>>" + updatedSalesVO);
+			        return updatedSalesVO;
+			    })
+			    .collect(Collectors.toList());
+	  	  
+			return updatedQuarterSales;
+	}
+	
+	
+	
+	
+	
+	@GetMapping(value = "deptSalesChart.do", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<SalesVO> empQuarterSalesChart() {
+		
+		List<SalesVO> empQuarterSales = salesService.retrieveEmpQuarterSales();
+		List<SalesVO> updatedDeptQuarterSales = empQuarterSales.stream()
+			    .map(salesVO -> {
+			        SalesVO updatedSalesVO = new SalesVO();
+			        String beforeQuarter = salesVO.getBeforeQuarter();
+			        String salesYear = salesVO.getSalesYear();
+			        String deptNm = salesVO.getDeptNm();
+			        updatedSalesVO.setBeforeQuarter(beforeQuarter);
+			        updatedSalesVO.setQuarter(Integer.parseInt(beforeQuarter));
+			        updatedSalesVO.setSalesYear(salesYear);
+			        updatedSalesVO.setDeptNm(deptNm);
+
+			        String beforeTotalSalesAmount = salesVO.getBeforeTotalSalesAmount();
+			        updatedSalesVO.setBeforeTotalSalesAmount(beforeTotalSalesAmount);
+			        updatedSalesVO.setTotalSalesAmount(Long.parseLong(beforeTotalSalesAmount));
+
+			        System.out.println("deptupdatedSalesVO>>>>>>>>>>" + updatedSalesVO);
+			        return updatedSalesVO;
+			    })
+			    .collect(Collectors.toList());
+	  	  
+			
+			return updatedDeptQuarterSales;
+	}
+
+	  
+		/*	
+		SALES_DEPT_CODE 
+		SALES_YEAR
+		SALES_MONTH
+		dept_AMOUNT 
+		CLINIC_CUSTOMER
+		HOSPITAL_CUSTOMER
+		DEPT_NM
+		*/
+	
+	@GetMapping(value = "allSalesChart.do", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<SalesVO> allSalesChart() {
+		
+		List<SalesVO> allSales = salesService.retrieveSales();
+		List<SalesVO> updatedAllSales = allSales.stream()
+			    .map(salesVO -> {
+			        SalesVO updatedSalesVO = new SalesVO();
+			       
+			        String salesYear = salesVO.getSalesYear();
+			        String salesMonth = salesVO.getSalesMonth();
+			        String deptNm = salesVO.getDeptNm();
+			        String beforeQuarter = salesVO.getBeforeQuarter();
+			        String beforeDeptAmount = salesVO.getBeforeDeptAmount();
+			        String beforeClinicCustomer = salesVO.getBeforeClinicCustomer();
+			        String beforehospitalCustomer = salesVO.getBeforeHospitalCustomer();
+			        
+			        updatedSalesVO.setQuarter(Integer.parseInt(beforeQuarter));
+			        updatedSalesVO.setClinicCustomer(Integer.parseInt(beforeClinicCustomer));
+			        updatedSalesVO.setHospitalCustomer(Integer.parseInt(beforehospitalCustomer));
+			        updatedSalesVO.setSalesYear(salesYear);
+			        updatedSalesVO.setDeptNm(deptNm);
+			        updatedSalesVO.setSalesMonth(salesMonth);
+			        updatedSalesVO.setDeptAmount(Long.parseLong(beforeDeptAmount));
+
+			        System.out.println("allupdatedSalesVO>>>>>>>>>>" + updatedSalesVO);
+			        return updatedSalesVO;
+			    })
+			    .collect(Collectors.toList());
+	
+			return updatedAllSales;
+	}
+
+	
+	
+}

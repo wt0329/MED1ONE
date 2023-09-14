@@ -1,0 +1,42 @@
+package kr.or.ddit.medical.clinc.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/clinic")
+public class DoctorClinicRetrieveController {
+	
+	@GetMapping("clinicRetrieve.do")
+	public String clinicRetrieve() {
+		return "clinic/clinic";
+	}
+	
+	// 진료 - 상병 검색
+		@GetMapping("diseaseSearch.do")
+		public String ClinicOrder() {
+			return "clinic/clinic";
+		}
+		
+//		// 진료 - 약품 리스트 조회 
+//		@GetMapping(value = "medicineSearch.do", produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
+//		@ResponseBody	
+//		public List<MedicineVO> medicineList(Model model, @RequestParam("what") String mediName {
+//			List<MedicineVO> mediList = service.retrieveMedicineList(mediName);
+//			return mediList;
+//		}
+		
+		// 진료 - 약품 검색 
+		@GetMapping("medicineSearch.do")
+		public String medicineSearch() {
+			return "clinic/clinic";
+		}
+		
+		// 진료 - 약품 즐찾리스트
+		@GetMapping("popularMedicineList.do")
+		public String popularMedicineList() {
+			return "clinic/clinic";
+		}
+}
+

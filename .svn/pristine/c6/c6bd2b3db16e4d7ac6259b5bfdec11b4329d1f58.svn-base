@@ -1,0 +1,35 @@
+package kr.or.ddit.message.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+import kr.or.ddit.medical.vo.PatientVO;
+import kr.or.ddit.message.dao.MessageDao;
+import kr.or.ddit.message.vo.MessageDtlVO;
+
+@Service
+public class MessageServiceImpl implements MessageService{
+
+	@Inject
+	private MessageDao messageDAO;
+	
+	/**
+	 * 환자 전체 연락처 조회
+	 */
+	@Override
+	public List<PatientVO> retrieveTelNumberList() {
+		return messageDAO.selectTelNumberList();
+	}
+
+	/**
+	 * 메시지 양식 조회
+	 */
+	@Override
+	public List<MessageDtlVO> retrieveMessageFormList() {
+		return messageDAO.selectMessageFormList();
+	}
+
+}

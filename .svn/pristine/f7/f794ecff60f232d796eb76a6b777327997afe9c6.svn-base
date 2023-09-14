@@ -1,0 +1,26 @@
+package kr.or.ddit.medical.nurse.vo;
+
+import java.util.List;
+
+import javax.validation.constraints.NotBlank;
+
+import kr.or.ddit.employee.vo.EmployeeVO;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(of="docEmpNm")
+public class DoctorDtlVO {
+	@NotBlank
+	private String docEmpNo;
+	private String docEmpNm;
+	@NotBlank
+	private int doctrNum;
+	@NotBlank
+	private String fcltyCode;
+	private String docProfile;
+	private String docMajor;
+	
+	private EmployeeVO employee;
+	private List<DoctorDtlVO> schList; 
+}

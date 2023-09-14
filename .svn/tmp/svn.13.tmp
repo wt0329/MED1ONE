@@ -1,0 +1,47 @@
+package kr.or.ddit.medical.nurse.controller;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.or.ddit.medical.nurse.service.NurseService;
+import kr.or.ddit.medical.nurse.vo.DoctorSchdulVO;
+import kr.or.ddit.medical.nurse.vo.NurseSchdulVO;
+import kr.or.ddit.medical.nurse.vo.wrapper.DoctorSchdulVOWrapper;
+import kr.or.ddit.medical.nurse.vo.wrapper.FullcalenderEvent;
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/nurse/")
+public class ScheduleRetrieveController {
+	
+	private final NurseService service;
+
+	// 근무일정 - 의사
+	@GetMapping(value = "docScheduleList.do", produces = MediaType.TEXT_HTML_VALUE)
+	public String docScheduleList() {	
+		return "nurse/schedule";
+	}
+	
+	@GetMapping(value = "docScheduleList.do", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<FullcalenderEvent> docScheduleListDataSource() {
+		List<DoctorSchdulVO> doctorList = service.retrieveDoctorList();
+		return doctorList.stream().map((d)->new DoctorSchdulVOWrapper(d)).collect(Collectors.toList());
+	}
+	
+	// 근무일정 - 간호사
+	@GetMapping("nurScheduleList.do")
+	public String nurScheduleList(Model model) {
+		List<NurseSchdulVO> nurseList = service.retrieveNurseList();
+		model.addAttribute("nurseList", nurseList);
+		return "nurse/schedule";
+	}
+}

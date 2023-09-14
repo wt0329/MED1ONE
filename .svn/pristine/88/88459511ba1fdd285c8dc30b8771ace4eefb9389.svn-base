@@ -1,0 +1,45 @@
+package kr.or.ddit.medical.nurse.vo.wrapper;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
+import kr.or.ddit.medical.nurse.vo.DoctorDtlVO;
+import kr.or.ddit.medical.nurse.vo.DoctorSchdulVO;
+
+public class DoctorSchdulVOWrapper implements FullcalenderEvent<DoctorSchdulVO> {
+	private DoctorSchdulVO adaptee;
+
+	public DoctorSchdulVOWrapper(DoctorSchdulVO adaptee) {
+		super();
+		this.adaptee = adaptee;
+	}
+
+	public String getId() {
+		return adaptee.getDoctrDate()+"_"+adaptee.getDocwkCode();
+		
+	}
+	
+	@JsonFormat(shape = Shape.STRING)
+	public LocalDate getStart() {
+		return LocalDate.parse(adaptee.getDoctrDate(), DateTimeFormatter.BASIC_ISO_DATE);
+		
+	}
+	@JsonFormat(shape = Shape.STRING)
+	public LocalDate getEnd() {
+		return LocalDate.parse(adaptee.getDoctrDate(), DateTimeFormatter.BASIC_ISO_DATE);
+		
+	}
+	
+	public String getTitle() {
+		return adaptee.getDocEmpNo();
+	}
+
+	@Override
+	public DoctorSchdulVO getExtendedProps() {
+		// TODO Auto-generated method stub
+		return adaptee;
+	}
+}

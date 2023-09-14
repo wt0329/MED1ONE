@@ -1,0 +1,22 @@
+package kr.or.ddit.medical.nurse.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/nurse/")
+public class ScheduleRetrieveController {
+
+	// 근무일정 - 의사
+	@GetMapping("docScheduleList.do")
+	public String docScheduleList() {
+		return "nurse/schedule";
+	}
+	
+	// 근무일정 - 간호사
+	@GetMapping("nurScheduleList.do")
+	public String nurScheduleList() {
+		return "nurse/schedule";
+	}
+}
